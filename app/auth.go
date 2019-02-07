@@ -7,11 +7,9 @@ import (
 	"os"
 	"strings"
 
-	u "github.com/hemanrnjn/chat-app/utils"
-
-	"github.com/hemanrnjn/chat-app/models"
-
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/hemanrnjn/chat-app/models"
+	u "github.com/hemanrnjn/chat-app/utils"
 )
 
 var JwtAuthentication = func(next http.Handler) http.Handler {
