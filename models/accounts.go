@@ -21,6 +21,7 @@ type Token struct {
 //a struct to rep user account
 type Account struct {
 	gorm.Model
+	Username string `json: username`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Token    string `json:"token";sql:"-"`
@@ -28,6 +29,10 @@ type Account struct {
 
 //Validate incoming user details...
 func (account *Account) Validate() (map[string]interface{}, bool) {
+
+	if len(account.Username) < 4 || len(account.Username) > 32 {
+		return u.Message(false, "Username must be between 4 to 32 charaters"), false
+	}
 
 	if !strings.Contains(account.Email, "@") {
 		return u.Message(false, "Email address is required"), false
@@ -40,8 +45,17 @@ func (account *Account) Validate() (map[string]interface{}, bool) {
 	//Email must be unique
 	temp := &Account{}
 
+	//check for errors and duplicate usernames
+	err := GetDB().Table("accounts").Where("username = ?", account.Username).First(temp).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return u.Message(false, "Connection error. Please retry"), false
+	}
+	if temp.Username != "" {
+		return u.Message(false, "Username is already in use by another user."), false
+	}
+
 	//check for errors and duplicate emails
-	err := GetDB().Table("accounts").Where("email = ?", account.Email).First(temp).Error
+	err = GetDB().Table("accounts").Where("email = ?", account.Email).First(temp).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return u.Message(false, "Connection error. Please retry"), false
 	}
