@@ -20,13 +20,14 @@ export class AuthComponent implements OnInit {
 
   login() {
     const obj = {
-      username: this.username,
       email: this.email,
       password: this.password
     }
     console.log(obj);
     this.authService.login(obj).subscribe((res: any) => {
+      console.log(res);
       if(res.status) {
+        this.authService.setSession(res);
         this.router.navigate(['/home']);
       }
     })

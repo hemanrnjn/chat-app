@@ -27,6 +27,8 @@ type Account struct {
 	Token    string `json:"token";sql:"-"`
 }
 
+type Accounts []Account
+
 //Validate incoming user details...
 func (account *Account) Validate() (map[string]interface{}, bool) {
 
@@ -133,4 +135,12 @@ func GetUser(u uint) *Account {
 
 	acc.Password = ""
 	return acc
+}
+
+func GetAllUsers() []Account {
+
+	var accounts Accounts
+	GetDB().Find(&accounts)
+
+	return accounts
 }

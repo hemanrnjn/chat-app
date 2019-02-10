@@ -1,8 +1,10 @@
 <nav class="navbar navbar-dark bg-dark">
   <a class="navbar-brand" [routerLink]="'/'">Chat App</a>
   <form class="form-inline">
-    <button class="btn btn-sm btn-outline-secondary pull-right" type="button"
+    <button *ngIf="!isLoggedIn" class="btn btn-sm btn-outline-secondary pull-right" type="button"
     [routerLink]="'/auth'">Login</button>
+    <button *ngIf="isLoggedIn" (click)="logout()" class="btn btn-sm btn-outline-secondary pull-right" type="button">
+      Logout</button>
   </form>
 </nav>
 <router-outlet></router-outlet>

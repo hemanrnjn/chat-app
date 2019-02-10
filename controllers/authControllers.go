@@ -9,7 +9,6 @@ import (
 )
 
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	account := &models.Account{}
 	err := json.NewDecoder(r.Body).Decode(account) //decode the request body into struct and failed if any error occur
@@ -22,8 +21,16 @@ var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
-var Authenticate = func(w http.ResponseWriter, r *http.Request) {
+var GetAllUsers = func(w http.ResponseWriter, r *http.Request) {
+
+	resp := models.GetAllUsers() //Get All Users
+	// u.Respond(w, resp)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
+var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 
 	account := &models.Account{}
 	err := json.NewDecoder(r.Body).Decode(account) //decode the request body into struct and failed if any error occur
