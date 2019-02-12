@@ -11,7 +11,6 @@ export class AuthService {
 
   private loggedInStatus = new Subject<any>();
   constructor(private http: HttpClient) {
-    
   }
 
   login(obj) {
