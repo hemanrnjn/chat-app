@@ -18,6 +18,11 @@ export class AuthService {
     return this.http.post("http://127.0.0.1:8000/api/user/login", data);
   }
 
+  register(obj) {
+    const data = JSON.stringify(obj)
+    return this.http.post("http://127.0.0.1:8000/api/user/new", data);
+  }
+
   setSession(authResult) {
       this.loggedInStatus.next({ loggedIn: true });
 

@@ -9,9 +9,17 @@ import { Router } from '@angular/router';
 })
 export class AuthComponent implements OnInit {
 
-  private username: string;
-  private email: string;
-  private password: string;
+  private reg_username: string;
+  private reg_email: string;
+  private reg_password: string;
+  private reg_re_password: string;
+  private login_email: string;
+  private login_password: string;
+  warning = {
+    title: "",
+    text: "",
+  }
+  private isRegister = true;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -20,8 +28,8 @@ export class AuthComponent implements OnInit {
 
   login() {
     const obj = {
-      email: this.email,
-      password: this.password
+      email: this.login_email,
+      password: this.login_password
     }
     console.log(obj);
     this.authService.login(obj).subscribe((res: any) => {
@@ -30,7 +38,26 @@ export class AuthComponent implements OnInit {
         this.authService.setSession(res);
         this.router.navigate(['/home']);
       }
-    })
+    });
+  }
+
+  register() {
+    if (this.reg_password == this.reg_re_password) {
+      const obj = {
+        username: this.reg_username,
+        email: this.reg_email,
+        password: this.reg_password
+      }
+      console.log(obj);
+      this.authService.register(obj).subscribe((res: any) => {
+        console.log(res);
+        if(res.status) {
+          this.router.navigate(['/auth']);
+        }
+      });
+    } else {
+      
+    }
   }
 
 }
