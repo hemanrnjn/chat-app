@@ -35,6 +35,7 @@ export class AuthComponent implements OnInit {
     this.authService.login(obj).subscribe((res: any) => {
       console.log(res);
       if(res.status) {
+        localStorage.setItem('loggedInUser', JSON.stringify(res.account));
         this.authService.setSession(res);
         this.router.navigate(['/home']);
       }

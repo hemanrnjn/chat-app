@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
 
   private isLoggedIn = false;
+  private username: string;
 
   constructor(private authService: AuthService, private router: Router) {
     if(localStorage.getItem('id_token')) {
@@ -20,6 +21,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.authService.getLoggedInStatus().subscribe(mess => {
       this.isLoggedIn = mess.loggedIn;
+      if(this.isLoggedIn) {
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        this.username = user.Username
+      }
     });
   }
 

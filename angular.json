@@ -24,10 +24,13 @@
             ],
             "styles": [
               "src/styles.css",
-              "assets/libs/bootstrap/css/bootstrap.min.css"
+              "src/assets/libs/bootstrap/css/bootstrap.min.css",
+              "src/assets/libs/fontawesome/css/all.css",
+              "src/styles/chat-page/chat_style.css"
             ],
             "scripts": [
-              "assets/libs/bootstrap/js/bootstrap.min.js"
+              "src/assets/libs/jquery/jquery.min.js",
+              "src/assets/libs/bootstrap/js/bootstrap.min.js"
             ],
             "es5BrowserSupport": true
           },
