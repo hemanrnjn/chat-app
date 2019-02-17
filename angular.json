@@ -30,6 +30,7 @@
             ],
             "scripts": [
               "src/assets/libs/jquery/jquery.min.js",
+              "src/assets/libs/popper/js/popper.min.js",
               "src/assets/libs/bootstrap/js/bootstrap.min.js"
             ],
             "es5BrowserSupport": true

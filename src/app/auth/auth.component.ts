@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
+declare var $: any;
+
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
+
 export class AuthComponent implements OnInit {
 
   private reg_username: string;
@@ -15,10 +18,6 @@ export class AuthComponent implements OnInit {
   private reg_re_password: string;
   private login_email: string;
   private login_password: string;
-  warning = {
-    title: "",
-    text: "",
-  }
   private isRegister = true;
 
   constructor(private authService: AuthService, private router: Router) { }

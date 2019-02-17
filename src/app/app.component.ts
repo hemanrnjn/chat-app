@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {
     if(localStorage.getItem('id_token')) {
       this.isLoggedIn = true;
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        this.username = user.Username
     }  
   }
 
