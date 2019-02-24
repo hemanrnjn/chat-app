@@ -7,21 +7,26 @@ import (
 
 	"github.com/hemanrnjn/chat-app/controllers"
 
+	"github.com/gorilla/handlers"
 	"github.com/hemanrnjn/chat-app/app"
 
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 )
 
+var upgrader websocket.Upgrader
+
 func main() {
+	upgrader.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
 
 	router := mux.NewRouter()
 
+	http.HandleFunc("/api/ws", controllers.HandleSocketMessages)
 	router.HandleFunc("/api/users", controllers.GetAllUsers).Methods("GET")
 	router.HandleFunc("/api/user/new", controllers.CreateAccount).Methods("POST")
 	router.HandleFunc("/api/user/login", controllers.Authenticate).Methods("POST")
-	router.HandleFunc("/api/contacts/new", controllers.CreateContact).Methods("POST")
-	router.HandleFunc("/api/me/contacts", controllers.GetContactsFor).Methods("GET") //  user/2/contacts
 
 	router.Use(app.JwtAuthentication) //attach JWT auth middleware
 
@@ -39,6 +44,7 @@ func main() {
 	fmt.Println(port)
 
 	err := http.ListenAndServe(":"+port, handlers.CORS(headers, methods, origins)(router)) //Launch the app, visit localhost:8000/api
+	// err := http.ListenAndServe(":"+port, router)
 	if err != nil {
 		fmt.Print(err)
 	}
