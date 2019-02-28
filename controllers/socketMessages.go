@@ -11,9 +11,15 @@ import (
 var upgrader websocket.Upgrader
 
 func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
+
+	upgrader.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
+
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Error(err)
+		log.Fatal(err)
 		return
 	}
 
