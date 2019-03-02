@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
     this.socket.addEventListener('message', (event) => {
       console.log(event);
       var msg = JSON.parse(event.data);
+      console.log(msg);
     });
   }
 

@@ -13,4 +13,5 @@ require (
 	github.com/rs/cors v1.6.0
 	github.com/sirupsen/logrus v1.3.0
 	golang.org/x/crypto v0.0.0-20190131182504-b8fe1690c613
+	golang.org/x/net v0.0.0-20190301231341-16b79f2e4e95
 )
