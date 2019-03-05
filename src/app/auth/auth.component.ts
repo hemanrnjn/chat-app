@@ -19,6 +19,10 @@ export class AuthComponent implements OnInit {
   private login_email: string;
   private login_password: string;
   private isRegister = true;
+  private warning = {
+    title: '',
+    text: ''
+  }
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -37,6 +41,10 @@ export class AuthComponent implements OnInit {
         localStorage.setItem('loggedInUser', JSON.stringify(res.account));
         this.authService.setSession(res);
         this.router.navigate(['/home']);
+      } else {
+        this.warning.title = "Warning";
+        this.warning.text = "Invalid Username or password";
+        $('.toast').toast('show')
       }
     });
   }
@@ -56,7 +64,9 @@ export class AuthComponent implements OnInit {
         }
       });
     } else {
-      
+      this.warning.title = "Warning";
+      this.warning.text = "Passwords do not match";
+      $('.toast').toast('show')
     }
   }
 

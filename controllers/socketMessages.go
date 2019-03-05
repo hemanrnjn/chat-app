@@ -31,6 +31,6 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Infof("Message from client : %v", creq)
 		// cresp := &models.ClientResponse{Todos: todos}
-		conn.WriteJSON("{'todos': []}")
+		conn.WriteJSON("{\"todos\": []}")
 	}
 }
