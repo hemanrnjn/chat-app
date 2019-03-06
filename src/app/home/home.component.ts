@@ -9,7 +9,6 @@ import { AuthService } from '../auth.service';
 export class HomeComponent implements OnInit {
 
   private socket: WebSocket
-  private loggedInUser: any;
 
   constructor(private authService: AuthService) { }
 
@@ -26,10 +25,12 @@ export class HomeComponent implements OnInit {
       console.log(event);
       const user: any = this.authService.getLoggedInUser();
       var msg = {
-        email: user.email,
+        from: user.email,
+        to: "abc@abc.com",
         username: user.Username,
         message: "Hello World"
       }
+      console.log(msg);
       this.socket.send(JSON.stringify(msg));
     });
 
@@ -38,6 +39,17 @@ export class HomeComponent implements OnInit {
       var msg = JSON.parse(event.data);
       console.log(msg);
     });
+  }
+
+  sendMessage(val) {
+    const user: any = this.authService.getLoggedInUser();
+    const msg: any = {
+      from: user.email,
+      to: "abc@abc.com",
+      username: user.Username,
+      message: val
+    }
+    this.socket.send(JSON.stringify(msg));
   }
 
 }
