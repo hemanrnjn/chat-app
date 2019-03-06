@@ -18,7 +18,6 @@ export class AuthComponent implements OnInit {
   private reg_re_password: string;
   private login_email: string;
   private login_password: string;
-  private isRegister = true;
   private warning = {
     title: '',
     text: ''
@@ -60,7 +59,7 @@ export class AuthComponent implements OnInit {
       this.authService.register(obj).subscribe((res: any) => {
         console.log(res);
         if(res.status) {
-          this.router.navigate(['/auth']);
+          this.router.navigate(['/home']);
         }
       });
     } else {

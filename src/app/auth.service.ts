@@ -55,4 +55,8 @@ export class AuthService {
     return this.loggedInStatus.asObservable();
   }
 
+  getLoggedInUser() {
+    return JSON.parse(localStorage.getItem("loggedInUser"))
+  }
+
 }

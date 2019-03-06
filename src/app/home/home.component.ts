@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,8 +9,9 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   private socket: WebSocket
+  private loggedInUser: any;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.socket = new WebSocket('ws://127.0.0.1:8000/ws');
@@ -22,13 +24,17 @@ export class HomeComponent implements OnInit {
     // Connection opened
     this.socket.addEventListener('open', (event) => {
       console.log(event);
-      var msg = { "type": "hello" };
+      const user: any = this.authService.getLoggedInUser();
+      var msg = {
+        email: user.email,
+        username: user.Username,
+        message: "Hello World"
+      }
       this.socket.send(JSON.stringify(msg));
     });
 
     // Listen for messages
     this.socket.addEventListener('message', (event) => {
-      console.log(event);
       var msg = JSON.parse(event.data);
       console.log(msg);
     });
