@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	// "github.com/gorilla/handlers"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/hemanrnjn/chat-app/app"
 	"github.com/hemanrnjn/chat-app/controllers"
@@ -24,9 +24,9 @@ func main() {
 
 	//router.NotFoundHandler = app.NotFoundHandler
 
-	// headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
-	// methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE"})
-	// origins := handlers.AllowedOrigins([]string{"*"})
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE"})
+	origins := handlers.AllowedOrigins([]string{"*"})
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -37,8 +37,8 @@ func main() {
 
 	go controllers.HandleMessages()
 
-	// err := http.ListenAndServe(":"+port, handlers.CORS(headers, methods, origins)(router)) //Launch the app, visit localhost:8000/api
-	err := http.ListenAndServe(":"+port, router)
+	err := http.ListenAndServe(":"+port, handlers.CORS(headers, methods, origins)(router)) //Launch the app, visit localhost:8000/api
+	// err := http.ListenAndServe(":"+port, router)
 
 	if err != nil {
 		fmt.Print(err)

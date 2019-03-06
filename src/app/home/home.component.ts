@@ -9,10 +9,16 @@ import { AuthService } from '../auth.service';
 export class HomeComponent implements OnInit {
 
   private socket: WebSocket
+  private users: any;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.getAllUsers().subscribe((res) => {
+      console.log(res)
+      this.users = res;
+    })
+
     this.socket = new WebSocket('ws://127.0.0.1:8000/ws');
 
     // on websocket error

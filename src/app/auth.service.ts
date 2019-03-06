@@ -23,6 +23,22 @@ export class AuthService {
     return this.http.post("http://127.0.0.1:8000/api/user/new", data);
   }
 
+  getAllUsers() {
+    // var headers_object = new HttpHeaders();
+    // const id_token = localStorage.getItem('id_token');
+    // headers_object.append('Content-Type', 'application/json');
+    // headers_object.append('Authorization', 'Bearer ' + id_token);
+
+    // const httpOptions = {
+    //   headers: headers_object
+    // };
+    return this.http.get("http://127.0.0.1:8000/api/users");
+  }
+
+  getToken() {
+    return localStorage.getItem('id_token');
+  }
+
   setSession(authResult) {
       this.loggedInStatus.next({ loggedIn: true });
 
