@@ -24,14 +24,6 @@ export class AuthService {
   }
 
   getAllUsers() {
-    // var headers_object = new HttpHeaders();
-    // const id_token = localStorage.getItem('id_token');
-    // headers_object.append('Content-Type', 'application/json');
-    // headers_object.append('Authorization', 'Bearer ' + id_token);
-
-    // const httpOptions = {
-    //   headers: headers_object
-    // };
     return this.http.get("http://127.0.0.1:8000/api/users");
   }
 
@@ -41,7 +33,6 @@ export class AuthService {
 
   setSession(authResult) {
       this.loggedInStatus.next({ loggedIn: true });
-
       const expiresAt = moment().add(authResult.expiresIn,'second');
       localStorage.setItem('id_token', authResult.account.token);
       localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
@@ -50,6 +41,7 @@ export class AuthService {
   logout() {
       localStorage.removeItem("id_token");
       localStorage.removeItem("expires_at");
+      localStorage.removeItem("loggedInUser");
       this.loggedInStatus.next({ loggedIn: false });
   }
 

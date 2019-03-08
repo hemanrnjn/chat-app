@@ -12,7 +12,6 @@ var upgrader websocket.Upgrader
 var msg models.Message
 
 var clients []models.ClientConn
-var conns []*websocket.Conn
 var broadcast = make(chan *models.ClientRequest)
 
 func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {

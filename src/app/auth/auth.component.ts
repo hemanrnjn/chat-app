@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
@@ -12,6 +12,8 @@ declare var $: any;
 
 export class AuthComponent implements OnInit {
 
+  private reg_firstname: string;
+  private reg_lastname: string;
   private reg_username: string;
   private reg_email: string;
   private reg_password: string;
@@ -23,7 +25,9 @@ export class AuthComponent implements OnInit {
     text: ''
   }
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService,
+    private router: Router,
+    private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
   }
@@ -40,6 +44,7 @@ export class AuthComponent implements OnInit {
         localStorage.setItem('loggedInUser', JSON.stringify(res.account));
         this.authService.setSession(res);
         this.router.navigate(['/home']);
+        this.ref.markForCheck();
       } else {
         this.warning.title = "Warning";
         this.warning.text = "Invalid Username or password";
@@ -51,6 +56,8 @@ export class AuthComponent implements OnInit {
   register() {
     if (this.reg_password == this.reg_re_password) {
       const obj = {
+        firstname: this.reg_firstname,
+        lastname: this.reg_lastname,
         username: this.reg_username,
         email: this.reg_email,
         password: this.reg_password
@@ -59,7 +66,9 @@ export class AuthComponent implements OnInit {
       this.authService.register(obj).subscribe((res: any) => {
         console.log(res);
         if(res.status) {
+          console.log('works');
           this.router.navigate(['/home']);
+          this.ref.markForCheck();
         }
       });
     } else {

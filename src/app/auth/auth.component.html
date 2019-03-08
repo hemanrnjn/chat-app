@@ -27,8 +27,18 @@
             <h5 class="card-title text-center">Register</h5>
             <form class="form-signin" (submit)="register()">
               <div class="form-label-group">
-                  <label for="inputUserame">Username</label>
-                <input type="text" id="inputUserame" name="reg_username" [(ngModel)]="reg_username" class="form-control" placeholder="Username" required autofocus>
+                <label for="inputFirstame">Firstname</label>
+                <input type="text" id="inputFirstame" name="reg_firstname" [(ngModel)]="reg_firstname" class="form-control" placeholder="Firstname" required autofocus>
+              </div>
+
+              <div class="form-label-group">
+                <label for="inputLastname">Lastname</label>
+                <input type="text" id="inputLastname" name="reg_lastname" [(ngModel)]="reg_lastname" class="form-control" placeholder="Lastname" required autofocus>
+              </div>
+
+              <div class="form-label-group">
+                <label for="inputUsername">Username</label>
+                <input type="text" id="inputUsername" name="reg_username" [(ngModel)]="reg_username" class="form-control" placeholder="Username" required autofocus>
               </div>
 
               <div class="form-label-group">

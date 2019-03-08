@@ -21,10 +21,12 @@ type Token struct {
 //a struct to rep user account
 type Account struct {
 	gorm.Model
-	Username string `json: username`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Token    string `json:"token";sql:"-"`
+	Firstname string `json: firstname`
+	Lastname  string `json: lastname`
+	Username  string `json: username`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	Token     string `json:"token";sql:"-"`
 }
 
 type Accounts []Account

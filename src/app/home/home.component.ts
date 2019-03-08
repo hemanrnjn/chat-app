@@ -9,15 +9,24 @@ import { AuthService } from '../auth.service';
 export class HomeComponent implements OnInit {
 
   private socket: WebSocket
-  private users: any;
+  private allUsers = [];
+  private chatUsers = [];
+  private loggedInUser: any;
 
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.authService.getAllUsers().subscribe((res) => {
-      console.log(res)
-      this.users = res;
-    })
+
+    this.loggedInUser = this.authService.getLoggedInUser();
+
+    this.authService.getAllUsers().subscribe((res: any) => {
+      console.log(res, this.loggedInUser)
+      this.allUsers = res;
+      const chatUsers = this.allUsers.filter(user => user.ID != this.loggedInUser.ID);
+      for (let user in chatUsers) {
+        user.active = false;
+      }
+    });
 
     this.socket = new WebSocket('ws://127.0.0.1:8000/ws');
 
@@ -56,6 +65,10 @@ export class HomeComponent implements OnInit {
       message: val
     }
     this.socket.send(JSON.stringify(msg));
+  }
+
+  selectUser(user) {
+    console.log(user);
   }
 
 }
