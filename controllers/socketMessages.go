@@ -35,6 +35,9 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 			n := models.ClientConn{Conn: conn, Email: creq.From}
 			clients = append(clients, n)
 		}
+		// } else {
+		// 	clients = replace(clients, creq, conn)
+		// }
 		log.Infof("Clients Connections: %v", clients)
 		if err != nil {
 			log.Println(err)
@@ -92,3 +95,13 @@ func delete(list []models.ClientConn, email string) []models.ClientConn {
 	}
 	return list
 }
+
+// func replace(list []models.ClientConn, creq *models.ClientRequest, conn *websocket.Conn) []models.ClientConn {
+// 	for i, ele := range list {
+// 		if ele.Email == creq.From {
+// 			list[i].Conn = conn
+// 			break
+// 		}
+// 	}
+// 	return list
+// }

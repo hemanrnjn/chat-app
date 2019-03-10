@@ -32,11 +32,19 @@
         </div>
       </div>
       <div *ngIf="!selectedUser" class="mesgs">
-        <h3 style="margin:auto">Select any contact to chat!</h3>
+        <div class="row justify-content-md-center">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <p>Select any contact to chat!</p>
+          </div>
+        </div>
       </div>
       <div *ngIf="selectedUser" class="mesgs">
         <div *ngIf="!currentChat.length">
-          <h3>Say Hi to {{selectedUser.Firstname}}!</h3>
+          <div class="row justify-content-md-center">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <p>Say Hi to {{selectedUser.Firstname}}!</p>
+            </div>
+          </div>
         </div>
         <div *ngIf="currentChat.length" class="msg_history">
           <div *ngFor="let chat of currentChat">
@@ -54,9 +62,9 @@
         </div>
         <div class="type_msg">
           <div class="input_msg_write">
-            <input #message type="text" class="write_msg" placeholder="Type a message" />
-            <button class="msg_send_btn" type="button" (click)="sendMessage(message.value)">
-              <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+            <input #messageBox type="text" (keyup.enter)="sendMessage(messageBox.value); messageBox.value=''" class="write_msg" placeholder="Type a message" />
+            <button class="msg_send_btn" type="button" (click)="sendMessage(messageBox.value); messageBox.value=''">
+              <i class="fab fa-telegram-plane" aria-hidden="true"></i>
             </button>
           </div>
         </div>
@@ -64,21 +72,47 @@
     </div>
   </div>
 </div>
-
-<!-- <div class="incoming_msg">
-  <div class="incoming_msg_img mt-12"><i class="fas fa-user fa-lg"></i></div>
-  <div class="received_msg">
-    <div class="received_withd_msg">
-      <p>Test which is a new approach to have all
-        solutions</p>
-      <span class="time_date"> 11:01 AM | June 9</span>
+<!-- <div class="container">
+  <div class="row mt-2-per border-grey">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-4 border-r-grey">
+          <div class="row">
+            <div class="contacts_head p-2 border-b-grey">
+              <div class="">
+                <h4>Contacts</h4>
+              </div>
+              <div class="">
+                <div>
+                  <input type="text" placeholder="Search">
+                  <span>
+                    <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="contacts_body p-2">
+              <div *ngIf="chatUsers.length">
+                <div *ngFor="let user of chatUsers">
+                  <div class="chat_list" [ngClass]="{'active_chat': user.active}"
+                    (click)="selectUser(user); user.active=true">
+                    <div class="chat_people">
+                      <div class="chat_img mt-12"><i class="fas fa-user fa-lg"></i></div>
+                      <div class="chat_ib">
+                        <h5>{{user.Firstname}} {{user.Lastname}} <span class="chat_date">Dec 25</span></h5>
+                        <p>{{user.email}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-8">
+          <div></div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="outgoing_msg">
-  <div class="sent_msg">
-    <p>Test which is a new approach to have all
-      solutions</p>
-    <span class="time_date"> 11:01 AM | June 9</span>
   </div>
 </div> -->

@@ -1,3 +1,23 @@
 .mt-12 {
     margin-top: 12px;
 }
+
+.mt-2-per {
+    margin-top: 2%;
+}
+
+.border-grey {
+    border: 1px solid #c4c4c4;
+}
+
+.border-r-grey {
+    border-right: 1px solid #c4c4c4;
+}
+
+.border-b-grey {
+    border-bottom: 1px solid #c4c4c4;
+}
+
+.p-2 {
+    padding: 2px;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../auth.service';
 
 import * as moment from 'moment';
@@ -6,9 +6,12 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class HomeComponent implements OnInit {
+  @ViewChild("messageBox") inputEl: ElementRef;
 
   private socket: WebSocket
   private allUsers = [];
@@ -18,7 +21,7 @@ export class HomeComponent implements OnInit {
   private allChats = [];
   private currentChat = [];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
 
@@ -33,6 +36,7 @@ export class HomeComponent implements OnInit {
       });
       this.chatUsers = chatUsers;
       console.log(this.chatUsers);
+      this.ref.markForCheck();
     });
 
     this.socket = new WebSocket('ws://127.0.0.1:8000/ws');
@@ -40,6 +44,7 @@ export class HomeComponent implements OnInit {
     // on websocket error
     this.socket.addEventListener('error', (event) => {
       console.log(event);
+      this.ref.markForCheck();
     });
 
     // Connection opened
@@ -54,6 +59,7 @@ export class HomeComponent implements OnInit {
       }
       console.log(msg);
       this.socket.send(JSON.stringify(msg));
+      this.ref.markForCheck();
     });
 
     // Listen for messages
@@ -62,6 +68,7 @@ export class HomeComponent implements OnInit {
       this.allChats.push(msg);
       this.currentChat = this.allChats.filter(chat => chat.to == this.selectedUser.email || chat.from == this.selectedUser.email);
       console.log(msg);
+      this.ref.markForCheck();
     });
   }
 
@@ -77,6 +84,7 @@ export class HomeComponent implements OnInit {
     this.socket.send(JSON.stringify(msg));
     this.allChats.push(msg);
     this.currentChat = this.allChats.filter(chat => chat.to == this.selectedUser.email || chat.from == this.selectedUser.email);
+    this.ref.markForCheck();
   }
 
   selectUser(currUser) {
@@ -88,6 +96,10 @@ export class HomeComponent implements OnInit {
     });
     this.currentChat = this.allChats.filter(chat => chat.to == currUser.email || chat.from == currUser.email);
     this.selectedUser = currUser;
+    setTimeout( () => {
+      this.inputEl.nativeElement.focus();
+      this.ref.markForCheck();
+    }, 0)    
   }
 
   formatTimestamp(val) {
