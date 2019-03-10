@@ -10,21 +10,23 @@ type ClientConn struct {
 }
 
 type Message struct {
-	From     string `json:"from"`
-	To       string `json:"to"`
-	Username string `json:"username"`
-	Message  string `json:"message"`
+	Timestamp string `json:"timeStamp"`
+	From      string `json:"from"`
+	To        string `json:"to"`
+	Username  string `json:"username"`
+	Message   string `json:"message"`
 }
 
 type Messages []Message
 
 type ClientRequest struct {
-	From     string `json:"from"`
-	To       string `json:"to"`
-	Username string `json:"username"`
-	Message  string `json:"message"`
+	Timestamp string `json:"timeStamp"`
+	From      string `json:"from"`
+	To        string `json:"to"`
+	Username  string `json:"username"`
+	Message   string `json:"message"`
 }
 
-type ClientResponse struct {
-	Messages `json:"messages,omitempty"`
-}
+// type ClientResponse struct {
+// 	Messages `json:"messages,omitempty"`
+// }

@@ -4,7 +4,7 @@
       <div class="inbox_people">
         <div class="headind_srch">
           <div class="recent_heading">
-            <h4>Recent</h4>
+            <h4>Contacts</h4>
           </div>
           <div class="srch_bar">
             <div class="stylish-input-group">
@@ -17,9 +17,10 @@
         <div class="inbox_chat">
           <div *ngIf="chatUsers.length">
             <div *ngFor="let user of chatUsers">
-              <div class="chat_list active_chat" [ngClass]="chatUsers.active ? 'active_chat' : ''" (click)="selectUser(user)">
+              <div class="chat_list" [ngClass]="{'active_chat': user.active}"
+                (click)="selectUser(user); user.active=true">
                 <div class="chat_people">
-                  <div class="chat_img"></div>
+                  <div class="chat_img mt-12"><i class="fas fa-user fa-lg"></i></div>
                   <div class="chat_ib">
                     <h5>{{user.Firstname}} {{user.Lastname}} <span class="chat_date">Dec 25</span></h5>
                     <p>{{user.email}}</p>
@@ -30,51 +31,23 @@
           </div>
         </div>
       </div>
-      <div class="mesgs">
-        <div class="msg_history">
-          <div class="incoming_msg">
-            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-            </div>
-            <div class="received_msg">
-              <div class="received_withd_msg">
-                <p>Test which is a new approach to have all
-                  solutions</p>
-                <span class="time_date"> 11:01 AM | June 9</span>
-              </div>
-            </div>
-          </div>
-          <div class="outgoing_msg">
-            <div class="sent_msg">
-              <p>Test which is a new approach to have all
-                solutions</p>
-              <span class="time_date"> 11:01 AM | June 9</span>
-            </div>
-          </div>
-          <div class="incoming_msg">
-            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-            </div>
-            <div class="received_msg">
-              <div class="received_withd_msg">
-                <p>Test, which is a new approach to have</p>
-                <span class="time_date"> 11:01 AM | Yesterday</span>
-              </div>
-            </div>
-          </div>
-          <div class="outgoing_msg">
-            <div class="sent_msg">
-              <p>Apollo University, Delhi, India Test</p>
-              <span class="time_date"> 11:01 AM | Today</span>
-            </div>
-          </div>
-          <div class="incoming_msg">
-            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-            </div>
-            <div class="received_msg">
-              <div class="received_withd_msg">
-                <p>We work directly with our designers and suppliers,
-                  and sell direct to you, which means quality, exclusive
-                  products, at a price anyone can afford.</p>
-                <span class="time_date"> 11:01 AM | Today</span>
+      <div *ngIf="!selectedUser" class="mesgs">
+        <h3 style="margin:auto">Select any contact to chat!</h3>
+      </div>
+      <div *ngIf="selectedUser" class="mesgs">
+        <div *ngIf="!currentChat.length">
+          <h3>Say Hi to {{selectedUser.Firstname}}!</h3>
+        </div>
+        <div *ngIf="currentChat.length" class="msg_history">
+          <div *ngFor="let chat of currentChat">
+            <div [ngClass]="chat.from==selectedUser.email?'incoming_msg':'outgoing_msg'">
+              <div *ngIf="chat.from==selectedUser.email" class="incoming_msg_img mt-12"><i
+                  class="fas fa-user fa-lg"></i></div>
+              <div [ngClass]="chat.from==selectedUser.email?'received_msg':'sent_msg'">
+                <div [ngClass]="{'received_withd_msg': chat.from==selectedUser.email}">
+                  <p>{{chat.message}}</p>
+                  <span class="time_date">{{formatTimestamp(chat.timeStamp)}}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -91,3 +64,21 @@
     </div>
   </div>
 </div>
+
+<!-- <div class="incoming_msg">
+  <div class="incoming_msg_img mt-12"><i class="fas fa-user fa-lg"></i></div>
+  <div class="received_msg">
+    <div class="received_withd_msg">
+      <p>Test which is a new approach to have all
+        solutions</p>
+      <span class="time_date"> 11:01 AM | June 9</span>
+    </div>
+  </div>
+</div>
+<div class="outgoing_msg">
+  <div class="sent_msg">
+    <p>Test which is a new approach to have all
+      solutions</p>
+    <span class="time_date"> 11:01 AM | June 9</span>
+  </div>
+</div> -->

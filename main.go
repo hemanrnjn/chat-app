@@ -38,7 +38,6 @@ func main() {
 	go controllers.HandleMessages()
 
 	err := http.ListenAndServe(":"+port, handlers.CORS(headers, methods, origins)(router)) //Launch the app, visit localhost:8000/api
-	// err := http.ListenAndServe(":"+port, router)
 
 	if err != nil {
 		fmt.Print(err)

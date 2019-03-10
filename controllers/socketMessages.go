@@ -41,8 +41,9 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		log.Infof("Message from client : %v", creq)
-
-		broadcast <- creq
+		if creq.To != "" {
+			broadcast <- creq
+		}
 
 	}
 }
@@ -59,8 +60,9 @@ func HandleMessages() {
 				if err != nil {
 					log.Printf("error: %v", err)
 					client.Conn.Close()
-					// delete(clients, client)
+					clients = delete(clients, client.Email)
 				}
+				break
 			}
 		}
 	}
@@ -76,8 +78,17 @@ func contains(list []models.ClientConn, email string) bool {
 		}
 		log.Info("False")
 		return false
-	} else {
-		return false
 	}
+	return false
+}
 
+func delete(list []models.ClientConn, email string) []models.ClientConn {
+	for i, ele := range list {
+		if ele.Email == email {
+			list[i] = list[len(list)-1]
+			list = list[:len(list)-1]
+			break
+		}
+	}
+	return list
 }

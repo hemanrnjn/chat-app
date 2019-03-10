@@ -26,7 +26,8 @@
               "src/styles.css",
               "src/assets/libs/bootstrap/css/bootstrap.min.css",
               "src/assets/libs/fontawesome/css/all.css",
-              "src/styles/chat-page/chat_style.css"
+              "src/styles/chat-page/chat_style.css",
+              "src/styles/custom_style.css"
             ],
             "scripts": [
               "src/assets/libs/jquery/jquery.min.js",
