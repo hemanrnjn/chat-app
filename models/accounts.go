@@ -26,7 +26,7 @@ type Account struct {
 	Username  string `json:"username"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
-	Token     string `json:"token";sql:"-"`
+	Token     string `json:"token" gorm:"-"`
 }
 
 type Accounts []Account

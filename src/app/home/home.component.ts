@@ -52,10 +52,11 @@ export class HomeComponent implements OnInit {
       console.log("Connected!");
       const user: any = this.authService.getLoggedInUser();
       var msg = {
-        from: user.email,
+        from: user.ID,
         to: '',
         username: user.Username,
-        message: "Connected!"
+        message: "Connected!",
+        is_read: false
       }
       console.log(msg);
       this.socket.send(JSON.stringify(msg));
@@ -66,7 +67,7 @@ export class HomeComponent implements OnInit {
     this.socket.addEventListener('message', (event) => {
       var msg = JSON.parse(event.data);
       this.allChats.push(msg);
-      this.currentChat = this.allChats.filter(chat => chat.to == this.selectedUser.email || chat.from == this.selectedUser.email);
+      this.currentChat = this.allChats.filter(chat => chat.to == this.selectedUser.ID || chat.from == this.selectedUser.ID);
       console.log(msg);
       this.ref.markForCheck();
     });
@@ -76,14 +77,15 @@ export class HomeComponent implements OnInit {
     const user: any = this.authService.getLoggedInUser();
     const msg: any = {
       timeStamp: moment().format(),
-      from: user.email,
-      to: this.selectedUser.email,
+      from: user.ID,
+      to: this.selectedUser.ID,
       username: user.Username,
-      message: val
+      message: val,
+      is_read: false
     }
     this.socket.send(JSON.stringify(msg));
     this.allChats.push(msg);
-    this.currentChat = this.allChats.filter(chat => chat.to == this.selectedUser.email || chat.from == this.selectedUser.email);
+    this.currentChat = this.allChats.filter(chat => chat.to == this.selectedUser.ID || chat.from == this.selectedUser.ID);
     this.ref.markForCheck();
   }
 
@@ -94,7 +96,7 @@ export class HomeComponent implements OnInit {
       }
       return;
     });
-    this.currentChat = this.allChats.filter(chat => chat.to == currUser.email || chat.from == currUser.email);
+    this.currentChat = this.allChats.filter(chat => chat.to == currUser.ID || chat.from == currUser.ID);
     this.selectedUser = currUser;
     setTimeout( () => {
       this.inputEl.nativeElement.focus();

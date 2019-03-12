@@ -5,6 +5,7 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/hemanrnjn/chat-app/models"
+	u "github.com/hemanrnjn/chat-app/utils"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -32,7 +33,7 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 		creq := &models.ClientRequest{}
 		err := conn.ReadJSON(creq)
 		if contains(clients, creq.From) == false {
-			n := models.ClientConn{Conn: conn, Email: creq.From}
+			n := models.ClientConn{Conn: conn, Id: creq.From}
 			clients = append(clients, n)
 		}
 		// } else {
@@ -44,7 +45,7 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		log.Infof("Message from client : %v", creq)
-		if creq.To != "" {
+		if creq.To != 0 {
 			broadcast <- creq
 		}
 
@@ -57,24 +58,33 @@ func HandleMessages() {
 		msg := <-broadcast
 
 		for _, client := range clients {
-			if msg.To == client.Email {
+			if msg.To == client.Id {
 				log.Info(client, msg)
 				err := client.Conn.WriteJSON(msg)
 				if err != nil {
 					log.Printf("error: %v", err)
 					client.Conn.Close()
-					clients = delete(clients, client.Email)
+					clients = delete(clients, client.Id)
 				}
+
+				// err := json.NewDecoder(r.Body).Decode(account) //decode the request body into struct and failed if any error occur
+				// if err != nil {
+				// 	u.Respond(w, u.Message(false, "Invalid request"))
+				// 	return
+				// }
+
+				resp := msg.AddMessage() //Create account
+				u.Respond(w, resp)
 				break
 			}
 		}
 	}
 }
 
-func contains(list []models.ClientConn, email string) bool {
+func contains(list []models.ClientConn, id int64) bool {
 	if len(list) > 1 {
 		for _, ele := range list {
-			if ele.Email == email {
+			if ele.Id == id {
 				log.Info("True")
 				return true
 			}
@@ -85,9 +95,9 @@ func contains(list []models.ClientConn, email string) bool {
 	return false
 }
 
-func delete(list []models.ClientConn, email string) []models.ClientConn {
+func delete(list []models.ClientConn, id int64) []models.ClientConn {
 	for i, ele := range list {
-		if ele.Email == email {
+		if ele.Id == id {
 			list[i] = list[len(list)-1]
 			list = list[:len(list)-1]
 			break

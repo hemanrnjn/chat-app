@@ -1,16 +1,13 @@
+package models
+
 import "github.com/jinzhu/gorm"
 
 type Message struct {
 	gorm.Model
-	Id        int    `json:"id"`
-	User_Id   int    `json:"user_id"`
+	Timestamp string `json:"timeStamp"`
+	From      int64  `json:"from"`
+	To        int64  `json:"to"`
+	Username  string `json:"username"`
 	Message   string `json:"message"`
-	Timestamp string `json:"timestamp"`
-}
-
-type MessageRecipient struct {
-	Id           int  `json:"id"`
-	Recepient_Id int  `json:"recepient_id"`
-	Message_Id   int  `json:"message_id"`
-	Is_Read      bool `json:"is_read"`
+	Is_Read   bool   `json:"is_read" gorm:"default:false`
 }
