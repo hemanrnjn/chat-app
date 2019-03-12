@@ -27,6 +27,11 @@ export class AuthService {
     return this.http.get("http://127.0.0.1:8000/api/users");
   }
 
+  getAllUserMessages(obj) {
+    const data = JSON.stringify(obj)
+    return this.http.post("http://127.0.0.1:8000/api/users/getAllMessages", data);
+  }
+
   getToken() {
     return localStorage.getItem('id_token');
   }

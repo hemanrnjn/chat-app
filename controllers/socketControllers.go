@@ -5,7 +5,6 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/hemanrnjn/chat-app/models"
-	u "github.com/hemanrnjn/chat-app/utils"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -14,8 +13,11 @@ var msg models.Message
 
 var clients []models.ClientConn
 var broadcast = make(chan *models.ClientRequest)
+var respWriter http.ResponseWriter
 
 func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
+
+	respWriter = w
 
 	upgrader.CheckOrigin = func(r *http.Request) bool {
 		return true
@@ -32,20 +34,19 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 	for {
 		creq := &models.ClientRequest{}
 		err := conn.ReadJSON(creq)
-		if contains(clients, creq.From) == false {
-			n := models.ClientConn{Conn: conn, Id: creq.From}
+
+		if contains(clients, creq.From_User) == false {
+			n := models.ClientConn{Conn: conn, Id: creq.From_User}
 			clients = append(clients, n)
 		}
-		// } else {
-		// 	clients = replace(clients, creq, conn)
-		// }
+
 		log.Infof("Clients Connections: %v", clients)
 		if err != nil {
 			log.Println(err)
 			break
 		}
 		log.Infof("Message from client : %v", creq)
-		if creq.To != 0 {
+		if creq.To_User != 0 {
 			broadcast <- creq
 		}
 
@@ -55,47 +56,46 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 func HandleMessages() {
 	for {
 
-		msg := <-broadcast
+		message := <-broadcast
+
+		msg.Timestamp = message.Timestamp
+		msg.From_User = message.From_User
+		msg.To_User = message.To_User
+		msg.Username = message.Username
+		msg.Message = message.Message
+		msg.Is_Read = message.Is_Read
+
+		log.Infof("Message Model: %v", msg)
+
+		resp := msg.AddMessage() //Add Message
+		log.Info("Message Status: ", resp["status"].(bool))
 
 		for _, client := range clients {
-			if msg.To == client.Id {
-				log.Info(client, msg)
-				err := client.Conn.WriteJSON(msg)
+			if message.To_User == client.Id {
+				log.Info(client, message)
+				err := client.Conn.WriteJSON(message)
 				if err != nil {
 					log.Printf("error: %v", err)
 					client.Conn.Close()
 					clients = delete(clients, client.Id)
 				}
-
-				// err := json.NewDecoder(r.Body).Decode(account) //decode the request body into struct and failed if any error occur
-				// if err != nil {
-				// 	u.Respond(w, u.Message(false, "Invalid request"))
-				// 	return
-				// }
-
-				resp := msg.AddMessage() //Create account
-				u.Respond(w, resp)
 				break
 			}
 		}
 	}
 }
 
-func contains(list []models.ClientConn, id int64) bool {
-	if len(list) > 1 {
-		for _, ele := range list {
-			if ele.Id == id {
-				log.Info("True")
-				return true
-			}
+func contains(list []models.ClientConn, id uint) bool {
+	for _, ele := range list {
+		if ele.Id == id || id == 0 {
+			return true
 		}
-		log.Info("False")
-		return false
 	}
+
 	return false
 }
 
-func delete(list []models.ClientConn, id int64) []models.ClientConn {
+func delete(list []models.ClientConn, id uint) []models.ClientConn {
 	for i, ele := range list {
 		if ele.Id == id {
 			list[i] = list[len(list)-1]
@@ -108,7 +108,7 @@ func delete(list []models.ClientConn, id int64) []models.ClientConn {
 
 // func replace(list []models.ClientConn, creq *models.ClientRequest, conn *websocket.Conn) []models.ClientConn {
 // 	for i, ele := range list {
-// 		if ele.Email == creq.From {
+// 		if ele.Email == creq.From_User {
 // 			list[i].Conn = conn
 // 			break
 // 		}

@@ -27,6 +27,15 @@ export class HomeComponent implements OnInit {
 
     this.loggedInUser = this.authService.getLoggedInUser();
 
+    this.authService.getAllUserMessages(this.loggedInUser).subscribe((res: any) => {
+      console.log(res);
+      if (res.status) {
+        this.allChats = res.messages;
+      }
+    });
+
+    
+
     this.authService.getAllUsers().subscribe((res: any) => {
       console.log(res, this.loggedInUser)
       this.allUsers = res;
@@ -52,8 +61,8 @@ export class HomeComponent implements OnInit {
       console.log("Connected!");
       const user: any = this.authService.getLoggedInUser();
       var msg = {
-        from: user.ID,
-        to: '',
+        from_user: user.ID,
+        to_user: 0,
         username: user.Username,
         message: "Connected!",
         is_read: false
@@ -67,7 +76,7 @@ export class HomeComponent implements OnInit {
     this.socket.addEventListener('message', (event) => {
       var msg = JSON.parse(event.data);
       this.allChats.push(msg);
-      this.currentChat = this.allChats.filter(chat => chat.to == this.selectedUser.ID || chat.from == this.selectedUser.ID);
+      this.currentChat = this.allChats.filter(chat => chat.to_user == this.selectedUser.ID || chat.from_user == this.selectedUser.ID);
       console.log(msg);
       this.ref.markForCheck();
     });
@@ -77,15 +86,15 @@ export class HomeComponent implements OnInit {
     const user: any = this.authService.getLoggedInUser();
     const msg: any = {
       timeStamp: moment().format(),
-      from: user.ID,
-      to: this.selectedUser.ID,
+      from_user: user.ID,
+      to_user: this.selectedUser.ID,
       username: user.Username,
       message: val,
       is_read: false
     }
     this.socket.send(JSON.stringify(msg));
     this.allChats.push(msg);
-    this.currentChat = this.allChats.filter(chat => chat.to == this.selectedUser.ID || chat.from == this.selectedUser.ID);
+    this.currentChat = this.allChats.filter(chat => chat.to_user == this.selectedUser.ID || chat.from_user == this.selectedUser.ID);
     this.ref.markForCheck();
   }
 
@@ -96,7 +105,9 @@ export class HomeComponent implements OnInit {
       }
       return;
     });
-    this.currentChat = this.allChats.filter(chat => chat.to == currUser.ID || chat.from == currUser.ID);
+    this.currentChat = this.allChats.filter(chat => {
+      chat.to_user == currUser.ID || chat.from_user == currUser.ID
+    });
     this.selectedUser = currUser;
     setTimeout( () => {
       this.inputEl.nativeElement.focus();
