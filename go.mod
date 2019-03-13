@@ -1,6 +1,7 @@
 module github.com/hemanrnjn/chat-app
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/elazarl/go-bindata-assetfs v1.0.0
 	github.com/gorilla/handlers v1.4.0

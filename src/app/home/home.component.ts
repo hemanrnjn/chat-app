@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    
+
 
     this.authService.getAllUsers().subscribe((res: any) => {
       console.log(res, this.loggedInUser)
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
       var msg = {
         from_user: user.ID,
         to_user: 0,
-        username: user.Username,
+        username: user.username,
         message: "Connected!",
         is_read: false
       }
@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit {
       timeStamp: moment().format(),
       from_user: user.ID,
       to_user: this.selectedUser.ID,
-      username: user.Username,
+      username: user.username,
       message: val,
       is_read: false
     }
@@ -106,13 +106,13 @@ export class HomeComponent implements OnInit {
       return;
     });
     this.currentChat = this.allChats.filter(chat => {
-      chat.to_user == currUser.ID || chat.from_user == currUser.ID
+      return chat.to_user == currUser.ID || chat.from_user == currUser.ID
     });
     this.selectedUser = currUser;
-    setTimeout( () => {
+    setTimeout(() => {
       this.inputEl.nativeElement.focus();
       this.ref.markForCheck();
-    }, 0)    
+    }, 0)
   }
 
   formatTimestamp(val) {

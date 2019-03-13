@@ -21,7 +21,9 @@ type Messages []Message
 func (message *Message) AddMessage() map[string]interface{} {
 	log.Info("Message: ", message)
 
-	if err := GetDB().Create(message); err != nil {
+	GetDB().Create(message)
+
+	if message.ID <= 0 {
 		return u.Message(false, "Failed to save Message, connection error.")
 	}
 
@@ -34,10 +36,7 @@ func GetMessagesForUser(userId uint) map[string]interface{} {
 
 	var messages Messages
 
-	if err := GetDB().Where("to_user = ?", userId).Find(&messages); err != nil {
-		response := u.Message(false, "Message not retrived!")
-		return response
-	}
+	GetDB().Where("to_user = ? OR from_user = ?", userId, userId).Find(&messages)
 
 	response := u.Message(true, "Message retrived")
 	response["messages"] = messages

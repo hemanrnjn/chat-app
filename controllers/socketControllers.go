@@ -9,7 +9,6 @@ import (
 )
 
 var upgrader websocket.Upgrader
-var msg models.Message
 
 var clients []models.ClientConn
 var broadcast = make(chan *models.ClientRequest)
@@ -57,6 +56,8 @@ func HandleMessages() {
 	for {
 
 		message := <-broadcast
+
+		msg := models.Message{}
 
 		msg.Timestamp = message.Timestamp
 		msg.From_User = message.From_User

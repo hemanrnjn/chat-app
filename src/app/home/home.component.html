@@ -48,11 +48,11 @@
         </div>
         <div *ngIf="currentChat.length" class="msg_history">
           <div *ngFor="let chat of currentChat">
-            <div [ngClass]="chat.from==selectedUser.email?'incoming_msg':'outgoing_msg'">
-              <div *ngIf="chat.from==selectedUser.email" class="incoming_msg_img mt-12"><i
+            <div [ngClass]="chat.from_user==selectedUser.ID?'incoming_msg':'outgoing_msg'">
+              <div *ngIf="chat.from_user==selectedUser.ID" class="incoming_msg_img mt-12"><i
                   class="fas fa-user fa-lg"></i></div>
-              <div [ngClass]="chat.from==selectedUser.email?'received_msg':'sent_msg'">
-                <div [ngClass]="{'received_withd_msg': chat.from==selectedUser.email}">
+              <div [ngClass]="chat.from_user==selectedUser.ID?'received_msg':'sent_msg'">
+                <div [ngClass]="{'received_withd_msg': chat.from_user==selectedUser.ID}">
                   <p>{{chat.message}}</p>
                   <span class="time_date">{{formatTimestamp(chat.timeStamp)}}</span>
                 </div>
