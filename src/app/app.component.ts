@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     if(localStorage.getItem('id_token')) {
       this.isLoggedIn = true;
       const user = JSON.parse(localStorage.getItem('loggedInUser'));
-        this.username = user.Username
+        this.username = user.username
     }  
   }
 

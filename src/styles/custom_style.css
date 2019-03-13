@@ -21,3 +21,8 @@
 .p-2 {
     padding: 2px;
 }
+
+.chat-message {
+    height: fit-content;
+    word-break: break-word;
+}
