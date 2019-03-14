@@ -12,15 +12,16 @@ declare var $: any;
 
 export class AuthComponent implements OnInit {
 
-  private reg_firstname: string;
-  private reg_lastname: string;
-  private reg_username: string;
-  private reg_email: string;
-  private reg_password: string;
-  private reg_re_password: string;
-  private login_email: string;
-  private login_password: string;
-  private warning = {
+  reg_firstname: string;
+  reg_lastname: string;
+  reg_username: string;
+  reg_email: string;
+  reg_password: string;
+  reg_re_password: string;
+  login_email: string;
+  login_password: string;
+  isRegister = false;
+  warning = {
     title: '',
     text: ''
   }

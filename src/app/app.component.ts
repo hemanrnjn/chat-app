@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  private isLoggedIn = false;
-  private username: string;
+  isLoggedIn = false;
+  username: string;
 
   constructor(private authService: AuthService, private router: Router) {
     if(localStorage.getItem('id_token')) {

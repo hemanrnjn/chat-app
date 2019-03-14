@@ -13,13 +13,13 @@ import * as moment from 'moment';
 export class HomeComponent implements OnInit {
   @ViewChild("messageBox") inputEl: ElementRef;
 
-  private socket: WebSocket
-  private allUsers = [];
-  private chatUsers = [];
-  private loggedInUser: any;
-  private selectedUser;
-  private allChats = [];
-  private currentChat = [];
+  socket: WebSocket
+  allUsers = [];
+  chatUsers = [];
+  loggedInUser: any;
+  selectedUser;
+  allChats = [];
+  currentChat = [];
 
   constructor(private authService: AuthService, private ref: ChangeDetectorRef) { }
 
