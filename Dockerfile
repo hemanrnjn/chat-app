@@ -1,16 +1,12 @@
-FROM httpd:latest
+FROM node:alpine AS builder
 
-COPY dist/chat /usr/local/apache2/htdocs/
+WORKDIR /chat-app
 
-ENTRYPOINT ./chat-app
+COPY . .
 
-COPY .htaccess /usr/local/apache2/htdocs/
-COPY httpd.conf /usr/local/apache2/conf/httpd.conf
+RUN npm install && \
+    npm run build
 
-RUN chmod -R 755 /usr/local/apache2/htdocs/
+FROM nginx:alpine
 
-EXPOSE 4200
-
-EXPOSE 8080
-
-EXPOSE 5432
+COPY --from=builder /chat-app/dist/chat-app/* /usr/share/nginx/html/
