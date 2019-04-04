@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: chat-app-client
+spec:
+  replicas: 2
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: chat-app-client
+    spec:
+      containers:
+        - image: hemanrnjn/chat-app-client
+          imagePullPolicy: Always
+          name: chat-app-client
+          ports:
+            - containerPort: 80
