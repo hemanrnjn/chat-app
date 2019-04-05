@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: chat-app-server
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - port: 8000
     protocol: TCP
