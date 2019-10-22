@@ -10,26 +10,28 @@ import { Subject, Observable } from 'rxjs';
 export class AuthService {
 
   private loggedInStatus = new Subject<any>();
+  private host = "http://" + window.location.host;
+
   constructor(private http: HttpClient) {
   }
 
   login(obj) {
     const data = JSON.stringify(obj)
-    return this.http.post("http://chat-app-server:8000/api/user/login", data);
+    return this.http.post(this.host + "/chat-app-server/api/user/login", data);
   }
 
   register(obj) {
     const data = JSON.stringify(obj)
-    return this.http.post("http://chat-app-server:8000/api/user/new", data);
+    return this.http.post(this.host + "/chat-app-server/api/user/new", data);
   }
 
   getAllUsers() {
-    return this.http.get("http://chat-app-server:8000/api/users");
+    return this.http.get(this.host + "/chat-app-server/api/users");
   }
 
   getAllUserMessages(obj) {
     const data = JSON.stringify(obj)
-    return this.http.post("http://chat-app-server:8000/api/users/getAllMessages", data);
+    return this.http.post(this.host + "/chat-app-server/api/users/getAllMessages", data);
   }
 
   getToken() {
