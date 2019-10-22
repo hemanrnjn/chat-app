@@ -1,8 +1,11 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: chat-app-server
 spec:
+  selector:
+    matchLabels:      
+      app: chat-app-server
   replicas: 2
   minReadySeconds: 15
   strategy:

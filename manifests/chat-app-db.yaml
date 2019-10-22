@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: chat-app-db
 spec:
+  selector:
+    matchLabels:      
+      app: chat-app-db
   replicas: 1
   minReadySeconds: 15
   strategy:
