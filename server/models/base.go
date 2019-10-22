@@ -6,7 +6,6 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/joho/godotenv"
 )
 
 var db *gorm.DB
@@ -18,25 +17,21 @@ func init() {
 	dbName := os.Getenv("POSTGRES_DB")
 	dbHost := os.Getenv("db_host")
 
-	e := godotenv.Load()
-	if e != nil {
-		fmt.Print(e)
-	}
+	dbURI := fmt.Sprintf("host=%s user=%s dbname=postgres sslmode=disable password=%s", dbHost, username, password)
+	fmt.Println(dbURI)
 
-	dbUri := fmt.Sprintf("host=%s user=%s dbname=postgres sslmode=disable password=%s", dbHost, username, password)
-
-	db, err := gorm.Open("postgres", dbUri)
+	db, err := gorm.Open("postgres", dbURI)
 	createDbQuery := fmt.Sprintf("CREATE DATABASE %s", dbName)
 	db = db.Exec(createDbQuery)
 	if db.Error != nil {
-		fmt.Println("Unable to create DB test_db, attempting to connect assuming it exists...")
+		fmt.Println("Unable to create DB " + dbName + " , attempting to connect assuming it exists...")
 	}
 	db.Close()
 
-	dbUri = fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
-	fmt.Println(dbUri)
+	dbURI = fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, username, dbName, password)
+	fmt.Println(dbURI)
 
-	db, err = gorm.Open("postgres", dbUri)
+	db, err = gorm.Open("postgres", dbURI)
 	if err != nil {
 		fmt.Print(err)
 	}
