@@ -100,7 +100,7 @@ func contains(list []models.ClientConn, id uint) bool {
 
 func delete(list []models.ClientConn, id uint) []models.ClientConn {
 	for i, ele := range list {
-		if ele.Id == id {
+		if ele.ID == id {
 			list[i] = list[len(list)-1]
 			list = list[:len(list)-1]
 			break
