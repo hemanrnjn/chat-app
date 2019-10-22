@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: chat-app-server
+  name: chat-app-db
 spec:
-  replicas: 2
+  replicas: 1
   minReadySeconds: 15
   strategy:
     type: RollingUpdate
@@ -13,16 +13,14 @@ spec:
   template:
     metadata:
       labels:
-        app: chat-app-server
+        app: chat-app-db
     spec:
       containers:
-        - image: hemanrnjn/chat-app-server
+        - image: postgres
           imagePullPolicy: Always
-          name: chat-app-server
+          name: postgres
           ports:
-            - containerPort: 80
+            - containerPort: 5432
           envFrom:
             - configMapRef:
                 name: db-config
-        
-
