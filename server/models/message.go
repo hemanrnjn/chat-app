@@ -6,18 +6,22 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Message struct of message
 type Message struct {
 	gorm.Model
+	ID        uint   `json:"id"`
 	Timestamp string `json:"timeStamp"`
-	From_User uint   `json:"from_user"`
-	To_User   uint   `json:"to_user"`
+	FromUser  uint   `json:"from_user"`
+	ToUser    uint   `json:"to_user"`
 	Username  string `json:"username"`
 	Message   string `json:"message"`
-	Is_Read   bool   `json:"is_read"`
+	IsRead    bool   `json:"is_read"`
 }
 
+// Messages slice of message
 type Messages []Message
 
+// AddMessage adds message for user
 func (message *Message) AddMessage() map[string]interface{} {
 	log.Info("Message: ", message)
 
@@ -32,11 +36,12 @@ func (message *Message) AddMessage() map[string]interface{} {
 	return response
 }
 
-func GetMessagesForUser(userId uint) map[string]interface{} {
+// GetMessagesForUser gets message
+func GetMessagesForUser(userID uint) map[string]interface{} {
 
 	var messages Messages
 
-	GetDB().Where("to_user = ? OR from_user = ?", userId, userId).Find(&messages)
+	GetDB().Where("to_user = ? OR from_user = ?", userID, userID).Find(&messages)
 
 	response := u.Message(true, "Message retrived")
 	response["messages"] = messages

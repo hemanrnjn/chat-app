@@ -8,4 +8,4 @@ data:
   POSTGRES_DB: chat_app
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
-  dbHost: chat-app-db
+  db_host: chat-app-db

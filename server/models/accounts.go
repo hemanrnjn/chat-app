@@ -10,17 +10,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-/*
-JWT claims struct
-*/
+// Token JWT claims struct
 type Token struct {
-	UserId uint
+	UserID uint
 	jwt.StandardClaims
 }
 
-//a struct to rep user account
+//Account struct to rep user account
 type Account struct {
 	gorm.Model
+	ID        uint   `json:"id"`
 	Firstname string `json:"firstname"`
 	Lastname  string `json:"lastname"`
 	Username  string `json:"username"`
@@ -29,6 +28,7 @@ type Account struct {
 	Token     string `json:"token" gorm:"-"`
 }
 
+//Accounts slice of user account
 type Accounts []Account
 
 //Validate incoming user details...
@@ -70,6 +70,7 @@ func (account *Account) Validate() (map[string]interface{}, bool) {
 	return u.Message(false, "Requirement passed"), true
 }
 
+// Create a new user account
 func (account *Account) Create() map[string]interface{} {
 
 	if resp, ok := account.Validate(); !ok {
@@ -86,7 +87,7 @@ func (account *Account) Create() map[string]interface{} {
 	}
 
 	//Create new JWT token for the newly registered account
-	tk := &Token{UserId: account.ID}
+	tk := &Token{UserID: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	account.Token = tokenString
@@ -98,6 +99,7 @@ func (account *Account) Create() map[string]interface{} {
 	return response
 }
 
+// Login user
 func Login(email, password string) map[string]interface{} {
 
 	account := &Account{}
@@ -117,7 +119,7 @@ func Login(email, password string) map[string]interface{} {
 	account.Password = ""
 
 	//Create JWT token
-	tk := &Token{UserId: account.ID}
+	tk := &Token{UserID: account.ID}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	account.Token = tokenString //Store the token in the response
@@ -127,6 +129,7 @@ func Login(email, password string) map[string]interface{} {
 	return resp
 }
 
+// GetUser to get user account
 func GetUser(u uint) *Account {
 
 	acc := &Account{}
@@ -139,6 +142,7 @@ func GetUser(u uint) *Account {
 	return acc
 }
 
+// GetAllUsers fetches all users
 func GetAllUsers() []Account {
 
 	var accounts Accounts

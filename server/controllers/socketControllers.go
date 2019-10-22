@@ -14,6 +14,7 @@ var clients []models.ClientConn
 var broadcast = make(chan *models.ClientRequest)
 var respWriter http.ResponseWriter
 
+// HandleSocketMessages handles socket messages
 func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 
 	respWriter = w
@@ -34,8 +35,8 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 		creq := &models.ClientRequest{}
 		err := conn.ReadJSON(creq)
 
-		if contains(clients, creq.From_User) == false {
-			n := models.ClientConn{Conn: conn, Id: creq.From_User}
+		if contains(clients, creq.FromUser) == false {
+			n := models.ClientConn{Conn: conn, ID: creq.FromUser}
 			clients = append(clients, n)
 		}
 
@@ -45,13 +46,14 @@ func HandleSocketMessages(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		log.Infof("Message from client : %v", creq)
-		if creq.To_User != 0 {
+		if creq.ToUser != 0 {
 			broadcast <- creq
 		}
 
 	}
 }
 
+// HandleMessages handles each message
 func HandleMessages() {
 	for {
 
@@ -60,11 +62,11 @@ func HandleMessages() {
 		msg := models.Message{}
 
 		msg.Timestamp = message.Timestamp
-		msg.From_User = message.From_User
-		msg.To_User = message.To_User
+		msg.FromUser = message.FromUser
+		msg.ToUser = message.ToUser
 		msg.Username = message.Username
 		msg.Message = message.Message
-		msg.Is_Read = message.Is_Read
+		msg.IsRead = message.IsRead
 
 		log.Infof("Message Model: %v", msg)
 
@@ -72,13 +74,13 @@ func HandleMessages() {
 		log.Info("Message Status: ", resp["status"].(bool))
 
 		for _, client := range clients {
-			if message.To_User == client.Id {
+			if message.ToUser == client.ID {
 				log.Info(client, message)
 				err := client.Conn.WriteJSON(message)
 				if err != nil {
 					log.Printf("error: %v", err)
 					client.Conn.Close()
-					clients = delete(clients, client.Id)
+					clients = delete(clients, client.ID)
 				}
 				break
 			}
@@ -88,7 +90,7 @@ func HandleMessages() {
 
 func contains(list []models.ClientConn, id uint) bool {
 	for _, ele := range list {
-		if ele.Id == id || id == 0 {
+		if ele.ID == id || id == 0 {
 			return true
 		}
 	}

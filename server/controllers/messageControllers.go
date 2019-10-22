@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// GetUserMessages gets user messages
 func GetUserMessages(w http.ResponseWriter, r *http.Request) {
 
 	account := &models.Account{}

@@ -39,6 +39,7 @@ func init() {
 	db.Debug().AutoMigrate(&Account{}, &Message{})
 }
 
+// GetDB returns db object
 func GetDB() *gorm.DB {
 	return db
 }

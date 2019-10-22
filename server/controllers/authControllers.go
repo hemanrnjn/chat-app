@@ -8,6 +8,7 @@ import (
 	u "github.com/hemanrnjn/chat-app/utils"
 )
 
+// CreateAccount obj
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 
 	account := &models.Account{}
@@ -21,6 +22,7 @@ var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
+// GetAllUsers obj
 var GetAllUsers = func(w http.ResponseWriter, r *http.Request) {
 
 	resp := models.GetAllUsers() //Get All Users
@@ -30,6 +32,7 @@ var GetAllUsers = func(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
+//Authenticate obj
 var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 
 	account := &models.Account{}
