@@ -17,21 +17,21 @@ export class AuthService {
 
   login(obj) {
     const data = JSON.stringify(obj)
-    return this.http.post(this.host + "/chat-app-server/api/user/login", data);
+    return this.http.post(this.host + "/api/user/login", data);
   }
 
   register(obj) {
     const data = JSON.stringify(obj)
-    return this.http.post(this.host + "/chat-app-server/api/user/new", data);
+    return this.http.post(this.host + "/api/user/new", data);
   }
 
   getAllUsers() {
-    return this.http.get(this.host + "/chat-app-server/api/users");
+    return this.http.get(this.host + "/api/users");
   }
 
   getAllUserMessages(obj) {
     const data = JSON.stringify(obj)
-    return this.http.post(this.host + "/chat-app-server/api/users/getAllMessages", data);
+    return this.http.post(this.host + "/api/users/getAllMessages", data);
   }
 
   getToken() {

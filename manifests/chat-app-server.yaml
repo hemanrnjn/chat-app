@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: Always
           name: chat-app-server
           ports:
-            - containerPort: 80
+            - containerPort: 8000
           envFrom:
             - configMapRef:
                 name: db-config
