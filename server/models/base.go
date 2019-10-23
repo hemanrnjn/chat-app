@@ -21,6 +21,9 @@ func init() {
 	fmt.Println(dbURI)
 
 	db, err := gorm.Open("postgres", dbURI)
+	if err != nil {
+		fmt.Println(err)
+	}
 	createDbQuery := fmt.Sprintf("CREATE DATABASE %s", dbName)
 	db = db.Exec(createDbQuery)
 	if db.Error != nil {
