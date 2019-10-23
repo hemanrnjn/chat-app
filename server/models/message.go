@@ -9,7 +9,6 @@ import (
 // Message struct of message
 type Message struct {
 	gorm.Model
-	ID        uint   `json:"id"`
 	Timestamp string `json:"timeStamp"`
 	FromUser  uint   `json:"from_user"`
 	ToUser    uint   `json:"to_user"`
