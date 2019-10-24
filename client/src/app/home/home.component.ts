@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   selectedUser;
   allChats = [];
   currentChat = [];
-  private host = "http://" + window.location.host;
+  private host = "ws://" + window.location.host;
 
   constructor(private authService: AuthService, private ref: ChangeDetectorRef) { }
 
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
       this.ref.markForCheck();
     });
 
-    this.socket = new WebSocket('ws://' + this.host + '/ws');
+    this.socket = new WebSocket(this.host + '/ws');
 
     // on websocket error
     this.socket.addEventListener('error', (event) => {

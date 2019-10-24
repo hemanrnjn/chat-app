@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:      
       app: chat-app-server
-  replicas: 2
+  replicas: 1
   minReadySeconds: 15
   strategy:
     type: RollingUpdate
