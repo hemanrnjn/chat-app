@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 
@@ -7,7 +7,8 @@ declare var $: any;
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  styleUrls: ['./auth.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AuthComponent implements OnInit {
@@ -67,7 +68,6 @@ export class AuthComponent implements OnInit {
       this.authService.register(obj).subscribe((res: any) => {
         console.log(res);
         if(res.status) {
-          console.log('works');
           this.router.navigate(['/home']);
           this.ref.markForCheck();
         }

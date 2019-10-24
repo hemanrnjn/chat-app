@@ -79,8 +79,8 @@ func HandleMessages() {
 				err := client.Conn.WriteJSON(message)
 				if err != nil {
 					log.Printf("error: %v", err)
-					client.Conn.Close()
-					clients = delete(clients, client.ID)
+          _ = client.Conn.Close()
+					clients = deleteConn(clients, client.ID)
 				}
 				break
 			}
@@ -98,7 +98,7 @@ func contains(list []models.ClientConn, id uint) bool {
 	return false
 }
 
-func delete(list []models.ClientConn, id uint) []models.ClientConn {
+func deleteConn(list []models.ClientConn, id uint) []models.ClientConn {
 	for i, ele := range list {
 		if ele.ID == id {
 			list[i] = list[len(list)-1]
