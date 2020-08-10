@@ -1,5 +1,7 @@
 module github.com/hemanrnjn/chat-app
 
+go 1.14
+
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/elazarl/go-bindata-assetfs v1.0.0 // indirect
