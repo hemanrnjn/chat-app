@@ -22,7 +22,7 @@
     "core-js": "^2.5.4",
     "jquery": "^3.3.1",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ngx-avatar": "^3.2.0",
     "ngx-bootstrap": "^3.2.0",
     "rxjs": "~6.3.3",
